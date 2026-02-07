@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Casino Crypto Vault</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="https://cdn.jsdelivr.net/npm/ethers@6.12.1/dist/ethers.umd.min.js"></script>
+    <script defer src="app.js"></script>
+  </head>
+  <body>
+    <div class="app">
+      <header>
+        <div>
+          <p class="eyebrow">Casino Crypto Vault</p>
+          <h1>La plateforme multi-crypto privée pour vos joueurs.</h1>
+          <p class="subtitle">
+            Génération locale des private keys en hex, stockage côté navigateur, et
+            conversion automatique en adresses Ethereum pour gérer vos assets ERC-20.
+          </p>
+        </div>
+        <div class="status-card" id="statusCard">
+          <div>
+            <span class="status-dot" id="statusDot"></span>
+            <span id="statusLabel">Déconnecté</span>
+          </div>
+          <p id="statusUser">Aucun utilisateur actif</p>
+          <button class="ghost" id="logoutButton" type="button">Se déconnecter</button>
+        </div>
+      </header>
+
+      <main>
+        <section class="panel" id="authPanel">
+          <div class="panel-header">
+            <h2>Connexion / Inscription</h2>
+            <p>Créez un profil joueur et obtenez une clé privée unique.</p>
+          </div>
+          <div class="panel-body">
+            <div class="auth-grid">
+              <form id="loginForm">
+                <h3>Connexion</h3>
+                <label>
+                  Nom d'utilisateur
+                  <input type="text" name="username" placeholder="CryptoHighRoller" required />
+                </label>
+                <label>
+                  Mot de passe
+                  <input type="password" name="password" placeholder="••••••••" required />
+                </label>
+                <button type="submit">Se connecter</button>
+                <p class="form-hint" id="loginHint"></p>
+              </form>
+
+              <form id="registerForm">
+                <h3>Inscription</h3>
+                <label>
+                  Nom d'utilisateur
+                  <input type="text" name="username" placeholder="LuckyPlayer" required />
+                </label>
+                <label>
+                  Mot de passe
+                  <input type="password" name="password" placeholder="Choisissez un mot de passe" required />
+                </label>
+                <label>
+                  Email
+                  <input type="email" name="email" placeholder="you@email.com" required />
+                </label>
+                <button type="submit">Créer le compte</button>
+                <p class="form-hint" id="registerHint"></p>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" id="dashboard" hidden>
+          <div class="panel-header">
+            <h2>Console privée</h2>
+            <p>Votre coffre-fort crypto personnel avec monitoring multi-ERC20.</p>
+          </div>
+          <div class="panel-body dashboard">
+            <div class="wallet-card">
+              <div class="wallet-header">
+                <h3>Clé privée & adresse</h3>
+                <div class="tags">
+                  <span>Local</span>
+                  <span>Hex</span>
+                  <span>ERC-20</span>
+                </div>
+              </div>
+              <div class="wallet-data">
+                <div>
+                  <label>Private key (hex)</label>
+                  <div class="copy-row">
+                    <code id="privateKey"></code>
+                    <button class="ghost" data-copy="privateKey">Copier</button>
+                  </div>
+                </div>
+                <div>
+                  <label>Adresse publique</label>
+                  <div class="copy-row">
+                    <code id="publicAddress"></code>
+                    <button class="ghost" data-copy="publicAddress">Copier</button>
+                  </div>
+                </div>
+                <p class="warning">
+                  Les clés sont stockées uniquement dans votre navigateur. Sauvegardez
+                  vos accès, ne partagez jamais votre private key.
+                </p>
+              </div>
+            </div>
+
+            <div class="balances-card">
+              <div class="wallet-header">
+                <h3>Balances live via Infura</h3>
+                <button id="refreshBalances">Rafraîchir</button>
+              </div>
+              <div class="balances-grid" id="balancesGrid"></div>
+            </div>
+
+            <div class="activity-card">
+              <div class="wallet-header">
+                <h3>Mode Casino / VIP</h3>
+              </div>
+              <ul>
+                <li>Gestion multi-crypto avec tokens ERC-20 personnalisés.</li>
+                <li>Suivi des dépôts, bonus, jackpots et cashback.</li>
+                <li>Connexion ultra-rapide pour les joueurs premium.</li>
+                <li>Protection locale : aucune clé privée n'est envoyée au serveur.</li>
+              </ul>
+              <div class="cta">
+                <button id="addToken">Ajouter un token ERC-20</button>
+                <button class="ghost" id="exportProfile">Exporter le profil</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="tokenDialog">
+      <form method="dialog">
+        <h3>Ajouter un token ERC-20</h3>
+        <label>
+          Nom du token
+          <input name="name" type="text" placeholder="MYTOKEN" required />
+        </label>
+        <label>
+          Adresse du contrat
+          <input name="address" type="text" placeholder="0x..." required />
+        </label>
+        <label>
+          Nombre de décimales
+          <input name="decimals" type="number" min="0" max="18" value="18" required />
+        </label>
+        <menu>
+          <button value="cancel" class="ghost">Annuler</button>
+          <button value="confirm">Ajouter</button>
+        </menu>
+      </form>
+    </dialog>
+  </body>
+</html>
